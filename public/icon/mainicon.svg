@@ -1,23 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <desc>Soviet Constructivism Icon for Xiao Cai's Notes</desc>
+  <desc>Space Age Constructivism Icon</desc>
   
   <!-- Background: Soviet Red -->
   <rect width="64" height="64" fill="#b42527"/>
   
-  <!-- Structure: Paper White Cross (The Target/Structure) -->
-  <rect x="28" y="10" width="8" height="44" fill="#e5e1e2"/>
-  <rect x="10" y="28" width="44" height="8" fill="#e5e1e2"/>
+  <!-- Diagonal Split (The Dark Side) -->
+  <path d="M64 64 L0 64 L64 0 Z" fill="#0f0b0a"/>
   
-  <!-- Conflict: Black Diagonal Slash (Dynamic Movement) -->
-  <path d="M40 -10 L74 24 L64 34 L30 0 Z" fill="#0f0b0a"/>
+  <!-- Speed Stripes (The Ring/Wing structure) -->
+  <!-- Coming from left, tapering -->
+  <path d="M-10 20 L40 32 L-10 44 Z" fill="#0f0b0a"/>
+  <path d="M-10 26 L30 32 L-10 38 Z" fill="#d5c8b7"/>
   
-  <!-- Texture: Noise Overlay for Industrial feel -->
-  <filter id="noise">
-    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
-    <feColorMatrix type="saturate" values="0"/>
-  </filter>
-  <rect width="64" height="64" filter="url(#noise)" opacity="0.15" style="mix-blend-mode: multiply"/>
+  <!-- The Core: White Planet -->
+  <circle cx="38" cy="32" r="14" fill="#e5e1e2"/>
   
+  <!-- Conflict: Yellow Shard -->
+  <path d="M38 32 L48 24 L44 40 Z" fill="#d5c8b7"/>
+  
+  <!-- Trajectory Line -->
+  <line x1="10" y1="54" x2="54" y2="10" stroke="#b42527" stroke-width="2"/>
+
   <!-- Border -->
-  <rect width="64" height="64" fill="none" stroke="#0f0b0a" stroke-width="4"/>
+  <rect x="2" y="2" width="60" height="60" fill="none" stroke="#e5e1e2" stroke-width="2"/>
 </svg>

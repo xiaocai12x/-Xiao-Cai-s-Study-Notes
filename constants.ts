@@ -145,6 +145,6 @@ export const BOOT_LOGS = [
 ];
 
 // === BGM CONFIGURATION ===
-// Local file path relative to the 'public' folder.
-// Ensure you have created 'public/music' and placed 'bgm.mp3' there.
-export const BGM_URL = "/music/bgm.mp3";
+// Switched to a reliable Google Sound Library track (Sci-Fi Drone) to fix playback errors.
+// If you want to use a local file, place it at /public/music/bgm.mp3 and change this to "/music/bgm.mp3"
+export const BGM_URL = "https://actions.google.com/sounds/v1/science_fiction/scifi_drone.ogg";

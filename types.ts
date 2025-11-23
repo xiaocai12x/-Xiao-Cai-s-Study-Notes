@@ -1,3 +1,4 @@
+import React from 'react';
 
 export enum Language {
   CN = 'CN',
