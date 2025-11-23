@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <desc>Soviet Constructivism Icon for Xiao Cai's Notes</desc>
+  
+  <!-- Background: Soviet Red -->
+  <rect width="64" height="64" fill="#b42527"/>
+  
+  <!-- Structure: Paper White Cross (The Target/Structure) -->
+  <rect x="28" y="10" width="8" height="44" fill="#e5e1e2"/>
+  <rect x="10" y="28" width="44" height="8" fill="#e5e1e2"/>
+  
+  <!-- Conflict: Black Diagonal Slash (Dynamic Movement) -->
+  <path d="M40 -10 L74 24 L64 34 L30 0 Z" fill="#0f0b0a"/>
+  
+  <!-- Texture: Noise Overlay for Industrial feel -->
+  <filter id="noise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+  </filter>
+  <rect width="64" height="64" filter="url(#noise)" opacity="0.15" style="mix-blend-mode: multiply"/>
+  
+  <!-- Border -->
+  <rect width="64" height="64" fill="none" stroke="#0f0b0a" stroke-width="4"/>
+</svg>

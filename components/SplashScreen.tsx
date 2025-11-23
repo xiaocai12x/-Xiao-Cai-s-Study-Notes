@@ -55,6 +55,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onEnter }) => {
     <motion.div
       className={`fixed inset-0 z-[10000] bg-soviet-paper flex items-center justify-center overflow-hidden ${isReady ? 'cursor-pointer' : 'cursor-wait'}`}
       onClick={handleClick}
+      data-hoverable={isReady ? "true" : undefined}
       exit={{ 
         clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
         transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
