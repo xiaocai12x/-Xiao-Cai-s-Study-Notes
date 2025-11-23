@@ -15,6 +15,7 @@ interface SidebarProps {
   toggleTheme: () => void;
   isBgmPlaying: boolean;
   toggleBgm: () => void;
+  onDonateClick: () => void; // Added prop
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -25,7 +26,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   theme,
   toggleTheme,
   isBgmPlaying,
-  toggleBgm
+  toggleBgm,
+  onDonateClick
 }) => {
   const t = TRANSLATIONS[language];
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -110,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <ControlKnob label={language} onClick={() => handleControlClick(() => setLanguage(language === Language.CN ? Language.EN : Language.CN))} active={false} onHover={() => playSound(SoundType.HOVER)}>
             <Languages size={18} />
           </ControlKnob>
-           <ControlKnob label="DONATE" onClick={() => handleControlClick(() => alert('Unity learning fund - Coming Soon'), false)} active={true} isAccent onHover={() => playSound(SoundType.HOVER)}>
+           <ControlKnob label="DONATE" onClick={() => handleControlClick(onDonateClick, false)} active={true} isAccent onHover={() => playSound(SoundType.HOVER)}>
             <Coffee size={18} />
           </ControlKnob>
         </div>
@@ -201,6 +203,9 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </ControlKnob>
                 <ControlKnob label={language} onClick={() => handleControlClick(() => setLanguage(language === Language.CN ? Language.EN : Language.CN))} active={false}>
                    <Languages size={20} />
+                </ControlKnob>
+                 <ControlKnob label="DONATE" onClick={() => handleControlClick(onDonateClick, false)} active={true} isAccent>
+                    <Coffee size={18} />
                 </ControlKnob>
              </div>
           </motion.div>

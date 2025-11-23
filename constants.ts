@@ -55,6 +55,15 @@ export const TRANSLATIONS = {
         safe: "安全检查通过",
         lockdown: "拒绝访问 // 锁定"
       }
+    },
+    donateModal: {
+      title: "特别经费申请",
+      subtitle: "供能协议 // PROTOCOL 7734",
+      desc: "您的支持将直接用于维持思维引擎的运作，以及补充必要的咖啡因燃料。保持信号塔运作。",
+      wechat: "微信支付通道",
+      alipay: "支付宝通道",
+      close: "关闭连接",
+      thanks: "/// 感谢您的补给。通讯结束。"
     }
   },
   [Language.EN]: {
@@ -110,9 +119,30 @@ export const TRANSLATIONS = {
         safe: "SECURITY CHECK PASSED",
         lockdown: "ACCESS DENIED // LOCKDOWN"
       }
+    },
+    donateModal: {
+      title: "SPECIAL FUNDING REQUEST",
+      subtitle: "POWER PROTOCOL // 7734",
+      desc: "Your support directly fuels the cognitive engine and replenishes essential caffeine reserves. Keep the signal tower operational.",
+      wechat: "WeChat Link",
+      alipay: "Alipay Link",
+      close: "TERMINATE LINK",
+      thanks: "/// SUPPLY RECEIVED. END TRANS."
     }
   }
 };
+
+export const BOOT_LOGS = [
+  "INITIALIZING KERNEL [OK]",
+  "LOADING SHADER CACHE...",
+  "CALIBRATING OPTICS...",
+  "MOUNTING FILE SYSTEM...",
+  "CHECKING INTEGRITY...",
+  "CONNECTING TO NEURAL NET...",
+  "BYPASSING SECURITY PROTOCOLS...",
+  "RENDERING INTERFACE...",
+  "SYSTEM READY."
+];
 
 // Placeholder for Vaporwave music
 export const BGM_URL = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-chill-111456.mp3";
