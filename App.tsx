@@ -3,6 +3,7 @@ import { HashRouter } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import CustomCursor from './components/CustomCursor';
 import Home from './pages/Home';
+import Notes from './pages/Notes';
 import Placeholder from './pages/Placeholder';
 import { Theme, Language, Page } from './types';
 import { BGM_URL, TRANSLATIONS } from './constants';
@@ -62,7 +63,7 @@ const App: React.FC = () => {
       case Page.HOME:
         return <Home language={language} />;
       case Page.NOTES:
-        return <Placeholder title={TRANSLATIONS[language].nav.notes} language={language} />;
+        return <Notes language={language} />;
       case Page.PORTFOLIO:
         return <Placeholder title={TRANSLATIONS[language].nav.portfolio} language={language} />;
       case Page.GUESTBOOK:

@@ -21,6 +21,15 @@ export const TRANSLATIONS = {
       notes: "笔记",
       portfolio: "作品集",
       guestbook: "留言板"
+    },
+    notes: {
+      title: "学习日志",
+      subtitle: "绝密档案 // 仅供内部参考",
+      author: "操作员: 小菜",
+      lastUpdate: "最后更新",
+      back: "归档 (返回)",
+      reading: "正在读取...",
+      category: "分类"
     }
   },
   [Language.EN]: {
@@ -43,9 +52,18 @@ export const TRANSLATIONS = {
       notes: "Notes",
       portfolio: "Portfolio",
       guestbook: "Guestbook"
+    },
+    notes: {
+      title: "STUDY LOG",
+      subtitle: "TOP SECRET // INTERNAL USE ONLY",
+      author: "OPERATOR: XIAO CAI",
+      lastUpdate: "LAST SYNC",
+      back: "ARCHIVE (RETURN)",
+      reading: "READING DATA...",
+      category: "CATEGORY"
     }
   }
 };
 
 // Placeholder for Vaporwave music
-export const BGM_URL = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-chill-111456.mp3"; 
+export const BGM_URL = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-chill-111456.mp3";
