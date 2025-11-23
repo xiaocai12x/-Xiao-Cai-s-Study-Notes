@@ -1,11 +1,19 @@
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BOOT_LOGS } from '../constants';
+import { useAudioSystem } from '../hooks/useAudioSystem';
+import { SoundType } from '../types';
 
-const SplashScreen: React.FC = () => {
+interface SplashScreenProps {
+  onEnter: () => void;
+}
+
+const SplashScreen: React.FC<SplashScreenProps> = ({ onEnter }) => {
   const [counter, setCounter] = useState(0);
   const [logs, setLogs] = useState<string[]>([]);
+  const [isReady, setIsReady] = useState(false);
+  const { playSound } = useAudioSystem();
 
   // Count up effect
   useEffect(() => {
@@ -13,6 +21,7 @@ const SplashScreen: React.FC = () => {
       setCounter((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
+          setIsReady(true); // System is ready
           return 100;
         }
         return prev + Math.floor(Math.random() * 5) + 1;
@@ -35,9 +44,17 @@ const SplashScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const handleClick = () => {
+    if (isReady) {
+      playSound(SoundType.SUCCESS);
+      onEnter();
+    }
+  };
+
   return (
     <motion.div
-      className="fixed inset-0 z-[10000] bg-soviet-paper flex items-center justify-center overflow-hidden"
+      className={`fixed inset-0 z-[10000] bg-soviet-paper flex items-center justify-center overflow-hidden ${isReady ? 'cursor-pointer' : 'cursor-wait'}`}
+      onClick={handleClick}
       exit={{ 
         clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
         transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
@@ -85,10 +102,23 @@ const SplashScreen: React.FC = () => {
                  animate={{ opacity: 1, x: 0 }}
                  className="mb-1"
                >
-                 > {log}
+                 {'>'} {log}
                </motion.div>
             ))}
         </div>
+
+        {/* Click to Enter Prompt */}
+        <AnimatePresence>
+            {isReady && (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-8 font-black text-xl md:text-2xl text-soviet-red uppercase tracking-[0.2em] animate-pulse border-2 border-soviet-red px-6 py-2 bg-soviet-paper"
+                >
+                    系统就绪 // 点击进入
+                </motion.div>
+            )}
+        </AnimatePresence>
 
       </div>
 

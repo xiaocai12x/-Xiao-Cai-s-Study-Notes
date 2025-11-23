@@ -17,19 +17,12 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<Theme>(Theme.LIGHT);
   const [language, setLanguage] = useState<Language>(Language.CN);
   const [currentPage, setCurrentPage] = useState<Page>(Page.HOME);
-  const [isBgmPlaying, setIsBgmPlaying] = useState<boolean>(false);
+  // Default BGM to true
+  const [isBgmPlaying, setIsBgmPlaying] = useState<boolean>(true);
   const [isDonateModalOpen, setIsDonateModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // Simulate Boot Sequence Time
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2800); // 2.8 seconds boot time
-    return () => clearTimeout(timer);
-  }, []);
 
   // Initialize Audio
   useEffect(() => {
@@ -48,7 +41,12 @@ const App: React.FC = () => {
   useEffect(() => {
     if (audioRef.current) {
       if (isBgmPlaying) {
-        audioRef.current.play().catch(e => console.error("Audio play failed interaction required:", e));
+        // Attempt to play. Browser might block until user interacts.
+        // We handle the "first interaction" via the Splash Screen click now.
+        audioRef.current.play().catch(e => {
+            // Use this log to debug autoplay policies if needed
+            // console.log("Autoplay waiting for interaction:", e);
+        });
       } else {
         audioRef.current.pause();
       }
@@ -64,6 +62,16 @@ const App: React.FC = () => {
       root.classList.remove('dark');
     }
   }, [theme]);
+
+  // Called when user clicks "Enter" on the splash screen
+  const handleBootComplete = () => {
+    setIsLoading(false);
+    // Explicitly call play() here because this function is triggered by a user click event.
+    // This satisfies the browser's Autoplay Policy.
+    if (isBgmPlaying && audioRef.current) {
+      audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+    }
+  };
 
   const toggleTheme = () => {
     setTheme(prev => prev === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
@@ -98,7 +106,7 @@ const App: React.FC = () => {
         <CustomCursor currentPage={currentPage} />
         
         <AnimatePresence mode="wait">
-          {isLoading && <SplashScreen />}
+          {isLoading && <SplashScreen onEnter={handleBootComplete} />}
         </AnimatePresence>
 
         <Sidebar 

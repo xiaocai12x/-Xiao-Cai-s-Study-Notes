@@ -10,7 +10,7 @@ interface NotesProps {
   language: Language;
 }
 
-// Mock Data
+// Mock Data with Markdown formatting
 const NOTES_DATA = [
   {
     id: 1,
@@ -19,7 +19,19 @@ const NOTES_DATA = [
     date: "2023.10.24",
     category: "GRAPHICS",
     desc: "Intercepting SRP for custom effects.",
-    content: "Content placeholder..."
+    content: `## 01. TACTICAL ANALYSIS
+Implementation required bypassing standard safety protocols. **Direct memory access** was authorized by Command.
+
+- Intercepted the **ScriptableRenderContext**
+- Injected custom command buffers before opaque pass
+- Optimized for mobile GPU architecture
+
+## 02. EXECUTION LOG
+The geometry shader pipeline was reconfigured to handle the load. 
+
+> WARNING: Latency detected in the depth pre-pass. Ensure the stencil buffer is cleared before the *volumetric* injection.
+
+We observed a **significant drop** in draw calls after batching the instanced meshes. The visual output now matches the target reference from the 1980s archive.`
   },
   {
     id: 2,
@@ -28,7 +40,15 @@ const NOTES_DATA = [
     date: "2023.11.05",
     category: "SHADER",
     desc: "Gerstner Waves equations.",
-    content: "Content placeholder..."
+    content: `## THEORY
+Implementing **Gerstner Waves** for physical displacement.
+The goal is not realism, but a *constructivist interpretation* of fluid dynamics.
+
+- Calculated normal vectors in vertex function
+- Applied **fresnel effect** based on view angle
+- Foam generated via depth-based color intersection
+
+> NOTE: Performance cost is high on mobile devices. Optimization required.`
   },
   {
     id: 3,
@@ -37,7 +57,13 @@ const NOTES_DATA = [
     date: "2023.12.12",
     category: "ARCHITECTURE",
     desc: "Data-oriented design patterns.",
-    content: "Content placeholder..."
+    content: `## ARCHITECTURE UPDATE
+Shifted from Object-Oriented to **Data-Oriented** design.
+Memory layout is now contiguous, reducing cache misses by **40%**.
+
+- ComponentData arrays aligned
+- SystemStateComponents used for lifecycle management
+- **BurstCompiler** enabled for heavy calculation jobs`
   },
   {
     id: 4,
@@ -46,7 +72,14 @@ const NOTES_DATA = [
     date: "2024.01.15",
     category: "ANIMATION",
     desc: "Procedural movement logic.",
-    content: "Content placeholder..."
+    content: `## MOTION LOGIC
+Procedural animation allows the heavy machinery to adapt to uneven terrain without pre-baked assets.
+
+- Raycast ground detection
+- **FABRIK** algorithm for leg placement
+- Center of mass interpolation
+
+The mech now feels "heavy" and "grounded" as per the visual directive.`
   },
   {
     id: 5,
@@ -55,9 +88,71 @@ const NOTES_DATA = [
     date: "2024.02.20",
     category: "VFX",
     desc: "Raymarching techniques.",
-    content: "Content placeholder..."
+    content: `## ATMOSPHERIC DENSITY
+Implemented **Raymarching** within a compute shader to render volumetric data.
+
+- Noise texture generation (Perlin + Worley)
+- Light absorption calculated via Beer's Law
+- **Temporal Reprojection** used to reduce noise
+
+> ALERT: GPU temperature increase detected during high-res rendering.`
   }
 ];
+
+// Simple Custom Markdown Renderer Component
+const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
+  const lines = content.split('\n');
+
+  const processInline = (text: string) => {
+    // Bold: **text** -> <strong class="text-soviet-red">text</strong>
+    let processed = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-black text-soviet-red">$1</strong>');
+    // Italic: *text* -> <em class="serif">text</em>
+    processed = processed.replace(/\*(.*?)\*/g, '<em class="font-serif italic opacity-80">$1</em>');
+    // Code: `text` -> <code class="mono">text</code>
+    processed = processed.replace(/`(.*?)`/g, '<code class="font-mono bg-soviet-black/10 px-1 text-sm rounded-sm">$1</code>');
+    return processed;
+  };
+
+  return (
+    <div className="space-y-4">
+      {lines.map((line, index) => {
+        // Headers (## )
+        if (line.startsWith('## ')) {
+          return (
+            <h3 key={index} className="text-xl md:text-2xl font-black uppercase tracking-wider mt-8 mb-4 border-l-4 border-soviet-red pl-3">
+              {line.slice(3)}
+            </h3>
+          );
+        }
+        // Lists (- )
+        if (line.startsWith('- ')) {
+          return (
+            <li key={index} className="list-none ml-4 flex items-start gap-2 mb-2">
+              <span className="text-soviet-red font-black mt-1">■</span>
+              <span dangerouslySetInnerHTML={{ __html: processInline(line.slice(2)) }} />
+            </li>
+          );
+        }
+        // Blockquotes (> )
+        if (line.startsWith('> ')) {
+          return (
+            <blockquote key={index} className="border-l-4 border-soviet-black bg-soviet-black/5 p-4 my-4 font-mono text-xs md:text-sm italic">
+              <span dangerouslySetInnerHTML={{ __html: processInline(line.slice(2)) }} />
+            </blockquote>
+          );
+        }
+        // Empty lines
+        if (line.trim() === '') {
+          return <div key={index} className="h-2" />;
+        }
+        // Regular paragraphs
+        return (
+          <p key={index} className="leading-relaxed" dangerouslySetInnerHTML={{ __html: processInline(line) }} />
+        );
+      })}
+    </div>
+  );
+};
 
 const Notes: React.FC<NotesProps> = ({ language }) => {
   const t = TRANSLATIONS[language];
@@ -273,14 +368,8 @@ const Notes: React.FC<NotesProps> = ({ language }) => {
                            [TIME]: {selectedNote.date}
                         </p>
                         
-                        <h3>01. Tactical Analysis</h3>
-                        <p>
-                           Implementation required bypassing standard safety protocols. Direct memory access was authorized by Command.
-                        </p>
-                        <p>
-                           {selectedNote.content}
-                           The geometry shader pipeline was reconfigured to handle the load.
-                        </p>
+                        {/* Custom Markdown Rendering */}
+                        <MarkdownRenderer content={selectedNote.content} />
 
                         <div className="my-8 md:my-12 relative group cursor-pointer" data-hoverable="true" onMouseEnter={() => playSound(SoundType.HOVER)}>
                            <div className="absolute inset-0 bg-soviet-black transform translate-x-2 translate-y-2"></div>
