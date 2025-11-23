@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { Page } from '../types';
@@ -87,7 +88,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ currentPage }) => {
     <>
       {/* THE FRAME: Open Square / Brackets (Follows with inertia) */}
       <motion.div
-        className="fixed top-0 left-0 z-[9999] pointer-events-none hidden md:block mix-blend-difference"
+        className="fixed top-0 left-0 z-[11000] pointer-events-none hidden md:block mix-blend-difference"
         style={{ x: frameX, y: frameY, translateX: "-50%", translateY: "-50%" }}
       >
         <div 
@@ -120,7 +121,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ currentPage }) => {
 
       {/* THE CORE: Inertia Dot (Main Pointer) */}
       <motion.div
-        className={`fixed top-0 left-0 z-[9999] pointer-events-none hidden md:block w-2 h-2 rounded-full shadow-sm ${getDotColor()} transition-colors duration-500`}
+        className={`fixed top-0 left-0 z-[11000] pointer-events-none hidden md:block w-2 h-2 rounded-full shadow-sm ${getDotColor()} transition-colors duration-500`}
         style={{ x: dotX, y: dotY, translateX: "-50%", translateY: "-50%" }}
         // Expand core on click
         animate={{ scale: isClicked ? 1.8 : 1 }}

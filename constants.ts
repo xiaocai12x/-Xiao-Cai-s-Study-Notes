@@ -144,5 +144,7 @@ export const BOOT_LOGS = [
   "SYSTEM READY."
 ];
 
-// Placeholder for Vaporwave music
-export const BGM_URL = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-chill-111456.mp3";
+// === BGM CONFIGURATION ===
+// Local file path relative to the 'public' folder.
+// Ensure you have created 'public/music' and placed 'bgm.mp3' there.
+export const BGM_URL = "/music/bgm.mp3";
