@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import CustomCursor from './components/CustomCursor';
 import Home from './pages/Home';
 import Notes from './pages/Notes';
+import Guestbook from './pages/Guestbook';
 import Placeholder from './pages/Placeholder';
 import { Theme, Language, Page } from './types';
 import { BGM_URL, TRANSLATIONS } from './constants';
@@ -67,7 +68,7 @@ const App: React.FC = () => {
       case Page.PORTFOLIO:
         return <Placeholder title={TRANSLATIONS[language].nav.portfolio} language={language} />;
       case Page.GUESTBOOK:
-        return <Placeholder title={TRANSLATIONS[language].nav.guestbook} language={language} />;
+        return <Guestbook language={language} />;
       default:
         return <Home language={language} />;
     }

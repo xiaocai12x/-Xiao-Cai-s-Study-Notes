@@ -15,12 +15,14 @@
           extend: {
             colors: {
               soviet: {
-                red: '#B32020', // Blood Red from artwork
-                black: '#1A1A1A', // Ink Black
-                paper: '#EBE8E3', // Concrete/Old Paper
-                cyan: '#98C9C3', // Muted Cyan from circle
-                darkGrey: '#2C2C2C',
-                accent: '#D4A017'
+                red: '#b42527', // Standard Soviet Red
+                darkRed: '#810702', // Deep dried blood red
+                black: '#0f0b0a', // Warm charcoal black
+                paper: '#e5e1e2', // Warm grey/white concrete
+                cyan: '#aacbc2', // Muted vintage cyan
+                yellow: '#d5c8b7', // Aged paper yellow
+                darkGrey: '#2C3035',
+                accent: '#A0A0A0'
               }
             },
             fontFamily: {
@@ -30,14 +32,31 @@
               body: ['Inter', 'sans-serif'],
             },
             backgroundImage: {
-              'halftone': 'radial-gradient(circle, #1A1A1A 1px, transparent 1px)',
-              'halftone-cyan': 'radial-gradient(circle, #98C9C3 1px, transparent 1px)',
-              'halftone-red': 'radial-gradient(circle, #B32020 1px, transparent 1px)',
-              'stripes': 'repeating-linear-gradient(45deg, transparent, transparent 10px, #B32020 10px, #B32020 20px)',
+              'halftone': 'radial-gradient(circle, #0f0b0a 1px, transparent 1px)',
+              'halftone-cyan': 'radial-gradient(circle, #aacbc2 1px, transparent 1px)',
+              'halftone-red': 'radial-gradient(circle, #b42527 1px, transparent 1px)',
+              'stripes': 'repeating-linear-gradient(45deg, transparent, transparent 10px, #b42527 10px, #b42527 20px)',
               'concrete': 'url("https://www.transparenttextures.com/patterns/concrete-wall.png")',
             },
             animation: {
               'spin-slow': 'spin 12s linear infinite',
+              'scan': 'scan 4s linear infinite',
+              'float': 'float 10s ease-in-out infinite',
+              'marquee': 'marquee 20s linear infinite',
+            },
+            keyframes: {
+              scan: {
+                '0%': { top: '-10%' },
+                '100%': { top: '110%' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              marquee: {
+                '0%': { transform: 'translateX(0%)' },
+                '100%': { transform: 'translateX(-50%)' },
+              }
             }
           }
         }
@@ -47,7 +66,7 @@
       body {
         cursor: none;
       }
-      /* Heavy Noise overlay */
+      /* Noise overlay */
       .bg-noise {
         position: fixed;
         top: 0;
@@ -56,11 +75,19 @@
         height: 100vh;
         pointer-events: none;
         z-index: 9999;
-        opacity: 0.08;
+        opacity: 0.15;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-        mix-blend-mode: multiply;
+        mix-blend-mode: overlay;
       }
       
+      /* Engineering Grid Background */
+      .bg-grid-pattern {
+        background-image: 
+          linear-gradient(to right, rgba(15, 11, 10, 0.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(15, 11, 10, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+
       .vertical-text {
         writing-mode: vertical-rl;
         text-orientation: upright;
@@ -70,6 +97,38 @@
       ::-webkit-scrollbar {
         width: 0px;
         background: transparent;
+      }
+      
+      /* Clip Paths */
+      .clip-path-polygon-slope {
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
+      }
+      
+      .clip-path-slant {
+         clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+      }
+      
+      .clip-path-torn {
+         clip-path: polygon(
+           0% 0%, 100% 0%, 100% 98%, 
+           95% 95%, 90% 98%, 85% 95%, 80% 98%, 75% 95%, 70% 98%, 65% 95%, 
+           60% 98%, 55% 95%, 50% 98%, 45% 95%, 40% 98%, 35% 95%, 30% 98%, 
+           25% 95%, 20% 98%, 15% 95%, 10% 98%, 5% 95%, 0% 98%
+         );
+      }
+
+      .mask-grunge {
+        mask-image: url("https://www.transparenttextures.com/patterns/black-scales.png");
+        -webkit-mask-image: url("https://www.transparenttextures.com/patterns/black-scales.png");
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #aacbc2;
+        border-radius: 2px;
       }
 
       @media (pointer: coarse) {
@@ -91,7 +150,7 @@
 }
 </script>
 </head>
-  <body class="bg-soviet-paper dark:bg-soviet-black text-soviet-black dark:text-soviet-paper transition-colors duration-300 overflow-x-hidden selection:bg-soviet-red selection:text-soviet-paper">
+  <body class="bg-soviet-paper dark:bg-soviet-black text-soviet-black dark:text-soviet-paper transition-colors duration-300 overflow-x-hidden selection:bg-soviet-red selection:text-soviet-paper font-sans">
     <div class="bg-noise"></div>
     <div id="root"></div>
   </body>

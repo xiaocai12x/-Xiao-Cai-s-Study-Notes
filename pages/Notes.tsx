@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Language } from '../types';
+import { Language, SoundType } from '../types';
 import { TRANSLATIONS } from '../constants';
-import { ArrowLeft, FileText, Tag, Calendar, Stamp, Hash, AlertTriangle, Zap } from 'lucide-react';
+import { ArrowLeft, FileText, Tag, Calendar, Stamp, Hash, AlertTriangle, Zap, X } from 'lucide-react';
+import { useAudioSystem } from '../hooks/useAudioSystem';
 
 interface NotesProps {
   language: Language;
@@ -13,47 +14,47 @@ interface NotesProps {
 const NOTES_DATA = [
   {
     id: 1,
-    title: "URP Custom Render Pass Implementation",
-    titleCN: "URP自定义渲染通道深度解析",
+    title: "URP Render Pass Injection",
+    titleCN: "URP渲染通道注入战术",
     date: "2023.10.24",
     category: "GRAPHICS",
-    desc: "Analysis of Scriptable Render Features. // 可编程管线拆解",
+    desc: "Intercepting SRP for custom effects.",
     content: "Content placeholder..."
   },
   {
     id: 2,
-    title: "Stylized Water Shader Breakdown",
-    titleCN: "风格化水体Shader完全拆解",
+    title: "Stylized Water Simulation",
+    titleCN: "风格化水体模拟算法",
     date: "2023.11.05",
     category: "SHADER",
-    desc: "Gerstner Waves & Depth Fade algorithms. // 波浪算法研究",
+    desc: "Gerstner Waves equations.",
     content: "Content placeholder..."
   },
   {
     id: 3,
-    title: "DOTS ECS Performance Optimization",
-    titleCN: "DOTS ECS 性能优化实战",
+    title: "ECS Performance Tuning",
+    titleCN: "ECS架构性能调优",
     date: "2023.12.12",
     category: "ARCHITECTURE",
-    desc: "100k entities with Job System. // 万级实体同屏方案",
+    desc: "Data-oriented design patterns.",
     content: "Content placeholder..."
   },
   {
     id: 4,
-    title: "Procedural Animation with IK",
-    titleCN: "基于反向动力学的程序化动画",
+    title: "Inverse Kinematics Mech",
+    titleCN: "反向动力学机甲控制",
     date: "2024.01.15",
     category: "ANIMATION",
-    desc: "Spider robot movement controller. // 蜘蛛机甲运动控制",
+    desc: "Procedural movement logic.",
     content: "Content placeholder..."
   },
   {
     id: 5,
-    title: "Raymarching Volumetric Clouds",
-    titleCN: "Raymarching 体积云实现",
+    title: "Volumetric Cloud Rendering",
+    titleCN: "体积云渲染技术",
     date: "2024.02.20",
     category: "VFX",
-    desc: "Volumetric rendering in forward renderer. // 体积渲染技术",
+    desc: "Raymarching techniques.",
     content: "Content placeholder..."
   }
 ];
@@ -61,76 +62,85 @@ const NOTES_DATA = [
 const Notes: React.FC<NotesProps> = ({ language }) => {
   const t = TRANSLATIONS[language];
   const [selectedNoteId, setSelectedNoteId] = useState<number | null>(null);
+  const { playSound } = useAudioSystem();
 
   const selectedNote = NOTES_DATA.find(n => n.id === selectedNoteId);
 
+  const handleNoteSelect = (id: number) => {
+    playSound(SoundType.OPEN);
+    setSelectedNoteId(id);
+  };
+
+  const handleBack = () => {
+    playSound(SoundType.CLICK);
+    setSelectedNoteId(null);
+  };
+
   return (
-    <div className="min-h-screen pl-64 bg-soviet-paper dark:bg-[#0f0f0f] relative overflow-hidden flex flex-col">
+    <div className="min-h-screen pl-0 md:pl-64 bg-soviet-paper dark:bg-[#0f0f0f] relative overflow-hidden flex flex-col pt-16 md:pt-0 transition-colors duration-300">
       
+      {/* ================= ATMOSPHERE: SCAN LINE ================= */}
+      <div className="fixed inset-0 pointer-events-none z-50 opacity-5">
+         <div className="w-full h-[2px] bg-soviet-cyan animate-scan absolute top-0 shadow-[0_0_20px_#7A8F95]"></div>
+      </div>
+
       {/* ================= BACKGROUND CHAOS ================= */}
-      <div className="fixed top-0 left-64 right-0 bottom-0 pointer-events-none select-none z-0 overflow-hidden">
+      <div className="fixed top-0 left-0 md:left-64 right-0 bottom-0 pointer-events-none select-none z-0 overflow-hidden">
         {/* Giant Cut Text */}
         <div className="absolute top-[-5%] right-[-10%] text-[25vw] font-black text-soviet-black opacity-[0.03] dark:opacity-[0.05] leading-none tracking-tighter mix-blend-multiply">
             DATA
             <br />
-            LOGS
+            ARCH
         </div>
         
-        {/* Diagonal Warning Stripes */}
-        <div className="absolute top-0 right-0 w-[500px] h-[800px] bg-stripes opacity-5 transform rotate-12 origin-top-right"></div>
+        {/* Diagonal Warning Stripes - Cold */}
+        <div className="absolute top-0 right-0 w-[500px] h-[800px] bg-stripes opacity-5 transform rotate-12 origin-top-right grayscale"></div>
         
         {/* Heavy Block */}
         <div className="absolute bottom-[10%] left-[10%] w-64 h-64 bg-soviet-black dark:bg-soviet-paper opacity-5 rotate-45"></div>
       </div>
 
       {/* ================= HEADER: BRUTALIST BAR ================= */}
-      <header className="relative z-10 pt-16 pb-8 px-8 md:px-12 flex flex-col items-start gap-4">
+      <header className="relative z-10 pt-8 md:pt-16 pb-4 md:pb-8 px-4 md:px-12 flex flex-col items-start gap-4">
         
         {/* Top Scroll Warning */}
-        <div className="absolute top-0 left-0 w-full h-8 bg-soviet-black text-soviet-red flex items-center overflow-hidden">
-           <div className="animate-marquee whitespace-nowrap font-mono text-xs font-bold tracking-[0.5em] uppercase flex items-center">
-              <AlertTriangle size={10} className="mx-4" /> WARNING: RESTRICTED ACCESS // AUTHORIZED PERSONNEL ONLY // 警告：受限访问区域 <AlertTriangle size={10} className="mx-4" /> SYSTEM MONITORING ACTIVE
-              <AlertTriangle size={10} className="mx-4" /> WARNING: RESTRICTED ACCESS // AUTHORIZED PERSONNEL ONLY // 警告：受限访问区域 <AlertTriangle size={10} className="mx-4" /> SYSTEM MONITORING ACTIVE
+        <div className="absolute top-0 left-0 w-full h-8 bg-soviet-black text-soviet-paper flex items-center overflow-hidden border-b border-soviet-red/50">
+           <div className="animate-marquee whitespace-nowrap font-mono text-[10px] md:text-xs font-bold tracking-[0.5em] uppercase flex items-center">
+              <AlertTriangle size={10} className="mx-4 text-soviet-red" /> ARCHIVE ACCESS GRANTED // 档案库访问权限已确认 <AlertTriangle size={10} className="mx-4 text-soviet-red" /> MONITORING
            </div>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-end gap-6 relative">
+        <div className="flex flex-col md:flex-row md:items-end gap-6 relative mt-4 md:mt-0">
            {/* Huge Title Block */}
            <div className="relative">
-              <h1 className="text-7xl md:text-9xl font-black text-soviet-black dark:text-soviet-paper uppercase leading-[0.8] tracking-tighter mix-blend-hard-light relative z-10">
-                {language === Language.CN ? "学习" : "STUDY"}
+              <h1 className="text-6xl md:text-9xl font-black text-soviet-black dark:text-soviet-paper uppercase leading-[0.8] tracking-tighter relative z-10">
+                {language === Language.CN ? "档案" : "FIELD"}
                 <br />
-                <span className="text-soviet-red pl-12">{language === Language.CN ? "日志" : "LOGS"}</span>
-              </h1>
-              {/* Offset Stroke Version for vibration effect */}
-              <h1 className="absolute top-1 left-1 text-7xl md:text-9xl font-black text-transparent stroke-black uppercase leading-[0.8] tracking-tighter opacity-30 pointer-events-none z-0">
-                {language === Language.CN ? "学习" : "STUDY"}
-                <br />
-                <span className="pl-12">{language === Language.CN ? "日志" : "LOGS"}</span>
+                <span className="text-soviet-black/40 dark:text-soviet-paper/40 pl-8 md:pl-12">{language === Language.CN ? "记录" : "LOGS"}</span>
               </h1>
            </div>
 
            {/* Vertical Info Strip */}
-           <div className="hidden md:flex flex-col justify-between h-32 border-l-4 border-soviet-red pl-4 py-1">
-              <span className="font-mono text-xs font-bold text-soviet-red uppercase tracking-widest">
-                 /// SECURE_CONNECTION
+           <div className="hidden md:flex flex-col justify-between h-32 border-l-4 border-soviet-black/20 dark:border-soviet-paper/20 pl-4 py-1">
+              <span className="font-mono text-xs font-bold text-soviet-black dark:text-soviet-paper uppercase tracking-widest opacity-60">
+                 /// CLASSIFIED
               </span>
               <div className="text-right">
-                  <div className="text-2xl font-black text-soviet-black dark:text-soviet-paper">V.2.0.4</div>
-                  <div className="text-xs font-serif italic opacity-60">Last Sync: 2024.03</div>
+                  <div className="text-2xl font-black text-soviet-black dark:text-soviet-paper">SEC-04</div>
+                  <div className="text-xs font-serif italic opacity-60 text-soviet-black dark:text-soviet-paper">Status: Active</div>
               </div>
            </div>
         </div>
       </header>
 
       {/* ================= MAIN CONTENT: THE LIST ================= */}
-      <main className="flex-grow relative z-10 px-4 md:px-12 pb-20 overflow-y-auto">
+      <main className="flex-grow relative z-10 px-2 md:px-12 pb-20 overflow-y-auto">
         
         <AnimatePresence mode="wait">
           {!selectedNote ? (
             <motion.div 
               key="list"
-              className="flex flex-col gap-6 max-w-6xl mx-auto mt-8"
+              className="flex flex-col gap-4 md:gap-6 max-w-6xl mx-auto mt-4 md:mt-8"
               initial="hidden"
               animate="show"
               exit="hidden"
@@ -146,173 +156,141 @@ const Notes: React.FC<NotesProps> = ({ language }) => {
                 <motion.div
                   key={note.id}
                   variants={{
-                    hidden: { x: -100, opacity: 0 },
+                    hidden: { x: -50, opacity: 0 },
                     show: { x: 0, opacity: 1 }
                   }}
-                  onClick={() => setSelectedNoteId(note.id)}
-                  className="group relative w-full cursor-none perspective-1000"
+                  onClick={() => handleNoteSelect(note.id)}
+                  onMouseEnter={() => playSound(SoundType.HOVER)}
+                  className="group relative w-full cursor-pointer md:cursor-none perspective-1000"
                   data-hoverable="true"
                 >
-                  {/* The Physical Card */}
+                  {/* The Physical Card - COLD INDUSTRIAL STYLE */}
                   <div className="
-                    relative bg-soviet-paper dark:bg-[#1a1a1a] 
-                    border-l-[12px] border-l-soviet-black dark:border-l-soviet-paper border-y-2 border-r-2 border-soviet-black dark:border-soviet-paper
-                    p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6
+                    relative bg-white dark:bg-[#1a1a1a] 
+                    border-l-[8px] md:border-l-[12px] border-l-soviet-black dark:border-l-soviet-paper border-y border-r border-soviet-black/20 dark:border-soviet-paper/30
+                    p-4 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-6
                     transition-all duration-200 ease-out
-                    group-hover:bg-soviet-red group-hover:border-soviet-red group-hover:border-l-soviet-black
-                    group-hover:translate-x-4 group-hover:-translate-y-2
-                    group-hover:shadow-[10px_10px_0px_#1A1A1A] dark:group-hover:shadow-[10px_10px_0px_#EBE8E3]
-                    clip-path-slant
+                    group-hover:bg-soviet-black group-hover:border-soviet-cyan group-hover:border-l-soviet-cyan
+                    md:group-hover:translate-x-4 md:group-hover:-translate-y-2
+                    group-hover:shadow-[5px_5px_0px_#6B8E9B]
+                    clip-path-slant shadow-sm
                   ">
                     
-                    {/* Background Index Number (Huge) */}
-                    <div className="absolute right-10 top-1/2 -translate-y-1/2 text-8xl font-black text-soviet-black/5 dark:text-soviet-paper/5 font-mono pointer-events-none group-hover:text-soviet-black/20 transition-colors">
+                    {/* Background Index Number */}
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-6xl md:text-8xl font-black text-black/5 dark:text-white/5 font-mono pointer-events-none group-hover:text-soviet-paper/10 transition-colors">
                       0{note.id}
                     </div>
 
                     {/* Left: Info */}
-                    <div className="relative z-10 flex-grow group-hover:text-soviet-paper transition-colors">
-                        <div className="flex items-center gap-3 mb-2">
-                           <span className="bg-soviet-black text-soviet-paper px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider group-hover:bg-soviet-paper group-hover:text-soviet-red transition-colors">
+                    <div className="relative z-10 flex-grow group-hover:text-soviet-paper transition-colors w-full">
+                        <div className="flex items-center gap-2 md:gap-3 mb-2">
+                           <span className="bg-soviet-black text-soviet-paper px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider group-hover:bg-soviet-cyan group-hover:text-black transition-colors dark:bg-soviet-paper dark:text-soviet-black">
                              {note.category}
                            </span>
-                           <span className="font-mono text-xs opacity-60 font-bold group-hover:opacity-80">
+                           <span className="font-mono text-[10px] md:text-xs opacity-60 font-bold group-hover:opacity-80 text-soviet-black dark:text-soviet-paper group-hover:text-soviet-paper">
                              // {note.date}
                            </span>
                         </div>
 
-                        <h3 className="text-2xl md:text-4xl font-black uppercase leading-none mb-2 font-sans tracking-tight">
+                        <h3 className="text-xl md:text-4xl font-black uppercase leading-tight mb-2 font-sans tracking-tight line-clamp-2 md:line-clamp-none text-soviet-black dark:text-soviet-paper group-hover:text-soviet-paper">
                           {language === Language.CN ? note.titleCN : note.title}
                         </h3>
                         
-                        <p className="font-serif italic text-sm opacity-70 group-hover:opacity-90 max-w-2xl">
+                        <p className="font-serif italic text-xs md:text-sm opacity-70 group-hover:opacity-90 max-w-2xl line-clamp-2 text-soviet-black dark:text-soviet-paper group-hover:text-soviet-paper">
                           {note.desc}
                         </p>
                     </div>
 
                     {/* Right: Interaction Icon */}
                     <div className="relative z-10 hidden md:flex items-center justify-center">
-                        <div className="w-12 h-12 border-2 border-soviet-black dark:border-soviet-paper group-hover:border-soviet-paper flex items-center justify-center transform rotate-45 group-hover:rotate-0 transition-transform duration-300">
-                           <Zap size={20} className="transform -rotate-45 group-hover:rotate-0 group-hover:text-soviet-paper text-soviet-black dark:text-soviet-paper transition-all" />
+                        <div className="w-12 h-12 border border-soviet-black dark:border-soviet-paper group-hover:border-soviet-cyan flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 bg-transparent group-hover:bg-soviet-cyan">
+                           <Zap size={20} className="text-soviet-black dark:text-soviet-paper group-hover:text-black transition-all" />
                         </div>
                     </div>
                   </div>
-
-                  {/* Glitch Overlay on Hover (Pseudo-element simulation) */}
-                  <div className="absolute inset-0 bg-soviet-cyan mix-blend-exclusion opacity-0 group-hover:opacity-30 pointer-events-none translate-x-2 translate-y-2 transition-opacity duration-100 hidden md:block clip-path-slant"></div>
                 </motion.div>
               ))}
             </motion.div>
           ) : (
-            /* ================= DETAIL VIEW: THE FILE ================= */
+            /* ================= DETAIL VIEW ================= */
             <motion.div
               key="detail"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              className="fixed inset-y-0 right-0 w-full md:w-[calc(100%-16rem)] pl-0 z-50 overflow-hidden flex"
+              className="fixed inset-y-0 right-0 w-full md:w-[calc(100%-16rem)] pl-0 z-50 overflow-hidden flex pt-16 md:pt-0"
             >
-               {/* Backdrop Blur */}
-               <div className="absolute inset-0 bg-soviet-black/80 backdrop-blur-sm -z-10" onClick={() => setSelectedNoteId(null)}></div>
+               <div className="absolute inset-0 bg-soviet-black/80 backdrop-blur-sm -z-10" onClick={handleBack}></div>
 
-               {/* The Paper Sheet */}
-               <div className="w-full h-full bg-soviet-paper relative flex flex-col overflow-y-auto shadow-[-50px_0px_100px_rgba(0,0,0,0.5)]">
+               <div className="w-full h-full bg-[#F4F4F4] relative flex flex-col overflow-y-auto shadow-[-50px_0px_100px_rgba(0,0,0,0.8)]">
                   
-                  {/* Top Bar with Controls */}
-                  <div className="sticky top-0 z-50 bg-soviet-black text-soviet-paper p-4 flex justify-between items-center shadow-md">
+                  {/* Top Bar */}
+                  <div className="sticky top-0 z-50 bg-soviet-black text-soviet-paper p-4 flex justify-between items-center shadow-md border-b-2 border-soviet-red">
                      <button 
-                        onClick={() => setSelectedNoteId(null)}
-                        className="flex items-center gap-2 font-bold uppercase hover:text-soviet-red transition-colors group"
+                        onClick={handleBack}
+                        onMouseEnter={() => playSound(SoundType.HOVER)}
+                        className="flex items-center gap-2 font-bold uppercase hover:text-soviet-cyan transition-colors group"
                         data-hoverable="true"
                      >
-                        <div className="bg-soviet-paper text-soviet-black p-1 group-hover:bg-soviet-red group-hover:text-soviet-paper transition-colors">
-                           <ArrowLeft size={16} />
-                        </div>
+                        <ArrowLeft size={16} />
                         <span className="tracking-widest">{t.notes.back}</span>
                      </button>
-                     <div className="font-mono text-xs opacity-50">
-                        READING MODE // SECURE
+                     <div className="font-mono text-[10px] md:text-xs opacity-50 uppercase text-soviet-red animate-pulse">
+                        Top Secret // Eyes Only
                      </div>
                   </div>
 
-                  {/* Content Container */}
-                  <div className="max-w-4xl mx-auto p-8 md:p-20 relative min-h-full">
-                     {/* Background Watermark */}
-                     <div className="absolute top-40 left-1/2 -translate-x-1/2 text-9xl font-black text-soviet-black/5 transform -rotate-45 pointer-events-none whitespace-nowrap border-4 border-soviet-black/5 p-4 mask-grunge">
-                        TOP SECRET
+                  <div className="max-w-4xl mx-auto p-6 md:p-20 relative min-h-full pb-32">
+                     <div className="absolute top-40 left-1/2 -translate-x-1/2 text-6xl md:text-9xl font-black text-black/5 transform -rotate-45 pointer-events-none whitespace-nowrap border-4 border-black/5 p-4 mask-grunge">
+                        RESTRICTED
                      </div>
 
-                     {/* Article Header */}
-                     <header className="mb-16 border-b-4 border-soviet-black pb-8">
+                     <header className="mb-8 md:mb-16 border-b-4 border-black pb-8">
                         <div className="flex flex-wrap gap-4 mb-6">
-                           <span className="bg-soviet-red text-soviet-paper px-3 py-1 font-mono font-bold text-sm uppercase">
+                           <span className="bg-soviet-black text-soviet-paper px-3 py-1 font-mono font-bold text-sm uppercase">
                               {selectedNote.category}
                            </span>
-                           <span className="border border-soviet-black px-3 py-1 font-mono font-bold text-sm uppercase text-soviet-black">
+                           <span className="border border-black px-3 py-1 font-mono font-bold text-sm uppercase text-black">
                               ID: #{selectedNote.id}
                            </span>
                         </div>
                         
-                        <h1 className="text-4xl md:text-6xl font-black text-soviet-black uppercase leading-[0.9] mb-6">
+                        <h1 className="text-3xl md:text-6xl font-black text-black uppercase leading-[0.9] mb-6">
                            {language === Language.CN ? selectedNote.titleCN : selectedNote.title}
                         </h1>
 
-                        <div className="flex items-start gap-4 text-soviet-black/70 font-serif italic text-lg border-l-4 border-soviet-cyan pl-4 bg-soviet-cyan/10 p-4">
-                           <div className="mt-1"><Stamp size={20} className="text-soviet-cyan" /></div>
+                        <div className="flex items-start gap-4 text-black/70 font-serif italic text-sm md:text-lg border-l-4 border-soviet-black pl-4 bg-gray-200 p-4">
+                           <div className="mt-1"><Stamp size={20} className="text-black" /></div>
                            <p>{selectedNote.desc}</p>
                         </div>
                      </header>
 
-                     {/* Article Body */}
-                     <article className="prose prose-xl max-w-none font-body text-soviet-black prose-headings:font-sans prose-headings:uppercase prose-headings:font-black prose-strong:text-soviet-red prose-blockquote:border-l-4 prose-blockquote:border-soviet-black prose-blockquote:bg-black/5 prose-blockquote:p-4 prose-blockquote:not-italic">
-                        <p className="font-mono text-sm mb-8 p-4 border border-dashed border-soviet-black text-soviet-black/60 bg-white">
-                           [SYSTEM LOG]: Decrypting content block 0x{selectedNote.id}F... Success.
+                     <article className="prose prose-lg md:prose-xl max-w-none font-body text-black prose-headings:font-sans prose-headings:uppercase prose-headings:font-black prose-strong:text-soviet-red">
+                        <p className="font-mono text-xs md:text-sm mb-8 p-4 border border-dashed border-black text-black/60 bg-white break-words">
+                           [SYSTEM LOG]: Decrypting content stream...
                            <br/>
                            [TIME]: {selectedNote.date}
                         </p>
                         
-                        <h3>01. Introduction</h3>
+                        <h3>01. Tactical Analysis</h3>
                         <p>
-                           The core challenge in this implementation was balancing performance with visual fidelity.
-                           By leveraging <strong>Unity's Scriptable Render Pipeline (SRP)</strong>, we can bypass the overhead of traditional rendering methods.
+                           Implementation required bypassing standard safety protocols. Direct memory access was authorized by Command.
                         </p>
                         <p>
                            {selectedNote.content}
-                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                           The geometry shader pipeline was reconfigured to handle the load.
                         </p>
 
-                        <div className="my-12 relative group cursor-pointer" data-hoverable="true">
-                           <div className="absolute inset-0 bg-soviet-red transform translate-x-2 translate-y-2 group-hover:translate-x-4 group-hover:translate-y-4 transition-transform"></div>
-                           <div className="relative bg-soviet-black h-64 flex items-center justify-center border-2 border-white">
-                              <span className="text-soviet-paper font-mono animate-pulse">
-                                 [ FIGURE 1.1: ARCHITECTURE DIAGRAM ]
+                        <div className="my-8 md:my-12 relative group cursor-pointer" data-hoverable="true" onMouseEnter={() => playSound(SoundType.HOVER)}>
+                           <div className="absolute inset-0 bg-soviet-black transform translate-x-2 translate-y-2"></div>
+                           <div className="relative bg-white h-40 md:h-64 flex items-center justify-center border-2 border-black">
+                              <span className="text-black font-mono animate-pulse text-xs md:text-base">
+                                 [ FIGURE 1.1: BLUEPRINT REDACTED ]
                               </span>
                            </div>
                         </div>
-
-                        <h3>02. Technical Approach</h3>
-                        <p>
-                           Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                           Excepteur sint occaecat cupidatat non proident.
-                        </p>
-                        <blockquote>
-                           "The essence of optimization is not doing less, but doing it smarter."
-                        </blockquote>
                      </article>
-
-                     {/* Footer Stamp */}
-                     <div className="mt-20 pt-10 border-t-2 border-soviet-black flex justify-between items-end opacity-50">
-                        <div className="text-center transform -rotate-6 border-4 border-soviet-black p-2">
-                           <div className="font-black text-xl uppercase">Verified</div>
-                           <div className="text-xs font-mono">By Xiao Cai</div>
-                        </div>
-                        <div className="font-mono text-xs text-right">
-                           END OF FILE<br/>
-                           0x00000000
-                        </div>
-                     </div>
                   </div>
                </div>
             </motion.div>
